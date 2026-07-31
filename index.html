@@ -62,5 +62,5 @@ if(!customerName||!customerPhone||!customerAddress){alert('Please fill Name, Mob
 const itemLines=cart.map(x=>`• ${x.n} × ${x.q} = ₹${x.p*x.q}`).join('\n');
 const totalAmount=cart.reduce((s,x)=>s+x.p*x.q,0);
 const message=`*GALAXY CAFE - NEW ORDER*\n\n*Customer:* ${customerName}\n*Mobile:* ${customerPhone}\n*Address:* ${customerAddress}\n*Order Type:* ${orderType}\n\n*Items:*\n${itemLines}\n\n*TOTAL: ₹${totalAmount}*\n*Note:* ${orderNote||'None'}`;
-window.location.href='https://api.whatsapp.com/send?phone=917083862019&text='+encodeURIComponent(message);
+window.location.href='https://api.whatsapp.com/send?phone=7083862019&text='+encodeURIComponent(message);
 }</script></body></html>
