@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Galaxy Cafe | Order Online</title>
+<style>
+:root{--y:#ffbf18;--bg:#07090d;--card:#11151c;--mut:#aeb4bf}
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:var(--bg);color:#fff}
+header{position:sticky;top:0;z-index:5;background:#090b10eF;border-bottom:1px solid #2a2f38;padding:14px 5%;display:flex;justify-content:space-between;align-items:center}
+.logo{font-size:28px;font-weight:900;letter-spacing:2px}.logo b{color:var(--y)}button{cursor:pointer}
+.hero{padding:55px 6%;text-align:center;background:radial-gradient(circle at 50% 0,#28200a,transparent 45%)}
+.badge{color:#09100a;background:#b8ff54;padding:6px 11px;border-radius:20px;font-weight:bold}.hero h1{font-size:clamp(40px,9vw,90px);margin:15px 0 5px}.hero h1 span{color:var(--y)}.hero p{color:#d6d6d6;font-size:18px}
+.info{display:flex;gap:15px;justify-content:center;flex-wrap:wrap;padding:18px;background:#0e1218;border-block:1px solid #252b34}.info div{padding:8px 22px;border-right:1px solid #303640}
+main{max-width:1300px;margin:auto;padding:25px;display:grid;grid-template-columns:1fr 340px;gap:22px}
+h2{color:var(--y)}.menu{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}.card{background:var(--card);border:1px solid #34302a;border-radius:14px;padding:16px}.card h3{margin:0 0 10px;color:var(--y);font-size:21px}.item{display:flex;justify-content:space-between;gap:8px;padding:8px 0;border-bottom:1px solid #242932;color:#e5e7eb}.item button{background:var(--y);border:0;border-radius:7px;font-weight:bold;padding:4px 9px}.price{color:#fff;white-space:nowrap}
+.cart{position:sticky;top:78px;height:max-content;background:#10141b;border:1px solid #3a3427;border-radius:15px;padding:18px}.cartline{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #2a3038}.total{font-size:25px;color:var(--y);font-weight:bold}
+input,textarea,select{width:100%;padding:12px;margin:6px 0 12px;border-radius:8px;border:1px solid #444;background:#fff;color:#111}
+.whatsapp{width:100%;padding:15px;background:#25D366;color:white;border:0;border-radius:9px;font-size:16px;font-weight:bold}.clear{background:none;color:#ff7777;border:1px solid #633;padding:8px;border-radius:7px}
+.menuimg{max-width:900px;width:100%;display:block;margin:0 auto 25px;border-radius:14px;border:1px solid #3b3425}
+footer{text-align:center;padding:30px;color:#aaa}
+@media(max-width:900px){main{grid-template-columns:1fr}.menu{grid-template-columns:repeat(2,1fr)}.cart{position:static}}@media(max-width:560px){.menu{grid-template-columns:1fr}.hero{padding:35px 5%}.info div{border:0}.menuimg{display:none}}
+</style></head><body>
+<header><div class="logo">GALAXY <b>CAFE</b></div><div>🛒 <span id="count">0</span> Items</div></header>
+<section class="hero"><span class="badge">100% PURE VEG</span><h1>GOOD FOOD.<br><span>GOOD MOOD.</span></h1><p>Fresh • Tasty • Budget Friendly</p><p>📍 Station Road, Near Bank of Baroda, Quadri Complex, 1st Floor, Vaijapur</p></section>
+<div class="info"><div>🌿 100% VEG</div><div>🛵 FAST DELIVERY</div><div>⭐ BEST QUALITY</div><div>📦 SAFE PACKING</div></div>
+<main><section><h2>🍕 ORDER YOUR FAVOURITES</h2><img class="menuimg" src="galaxy-menu.jpg" alt="Galaxy Cafe Menu">
+<div class="menu" id="menu"></div></section>
+<aside class="cart"><h2>YOUR CART</h2><div id="cart"><p style="color:#aaa">Your cart is empty.</p></div><div class="cartline total"><span>TOTAL</span><span>₹<span id="total">0</span></span></div>
+<button class="clear" onclick="clearCart()">Clear Cart</button><h2>DELIVERY DETAILS</h2>
+<input id="name" placeholder="Full Name"><input id="phone" placeholder="Mobile Number" type="tel"><textarea id="address" placeholder="House no., Area, Landmark, City"></textarea>
+<select id="type"><option>Home Delivery</option><option>Self Pickup</option></select><textarea id="note" placeholder="Any special instructions?"></textarea>
+<button class="whatsapp" onclick="order()">📲 PLACE ORDER ON WHATSAPP</button><p style="font-size:12px;color:#aaa;text-align:center">Order will be sent to WhatsApp: 7083862019</p></aside></main>
+<footer>Galaxy Cafe • Fresh Ingredients • Better Taste • Better Mood</footer>
+<script>
+const data={
+"Pizza":[["Plain Veg Cheese Pizza (6 inch)",100],["Plain Veg Cheese Pizza (9 inch)",150],["Onion Cheese Pizza (6 inch)",120],["Onion Cheese Pizza (9 inch)",150],["Cheese Corn Pizza (6 inch)",130],["Cheese Corn Pizza (9 inch)",160],["Onion Capsicum Cheese Pizza (6 inch)",140],["Onion Capsicum Cheese Pizza (9 inch)",180],["Margherita Cheese Pizza (6 inch)",150],["Margherita Cheese Pizza (9 inch)",190],["Paneer Cheese Pizza (6 inch)",150],["Paneer Cheese Pizza (9 inch)",190],["Veg Paneer Loaded Pizza (6 inch)",160],["Veg Paneer Loaded Pizza (9 inch)",200],["Extra Cheese Add",20]],
+"Burgers":[["Veg Aalu Tikki Cheese Burger",60],["Veg Cheese Corn Burger",70],["Paneer Tikki Burger",110],["Cafe Special Mix Veg Cheese Burger",130]],
+"Momos (Veg)":[["Veg Steam Momos (6 pcs)",60],["Veg Fry Momos (6 pcs)",70],["Veg Kurkure Momos (6 pcs)",90],["Paneer Steam Momos (5 pcs)",90],["Paneer Fry Momos (5 pcs)",100],["Veg Cheese Momos (5 pcs)",100]],
+"Sandwich":[["Veg Sandwich",40],["Veg Cheese Grilled Sandwich",50],["Grilled Masala Corn Cheese Sandwich",70],["Cheese Corn Sandwich",60],["Veg Paneer Cheese Grilled Sandwich",80],["Green Tandoori Sandwich",80],["Extreme Cheese Grilled Sandwich",100]],
+"French Fries":[["Salted Fries",50],["Peri Peri Fries",70],["Mayonnaise Fries",80],["Cheese Fries",90]],
+"Pasta":[["Red Sauce Pasta",60],["Masala Pasta",80],["Tamato Chilli Pasta",80],["White Sauce Pasta",130],["Garlic Sauce Pasta",150]],
+"Maggi":[["Plain Maggi",40],["Vegetable Masala Maggi",60],["Corn Masala Maggi",60],["Cheese Corn Maggi",70],["Paneer Cheese Maggi",80]],
+"Cold Coffee":[["Cold Coffee",50],["Chocolate Shake",60],["Oreo Shake",60],["Kit Kat Shake",70]],
+"Hot Drinks":[["Chai",15],["Hot Coffee",20],["Born Vita",40],["Chocolate Hot Coffee",50]],
+"Ice Tea":[["Lemon Juice",40],["Lemon Ice Tea",50]],
+"Mocktail":[["Lemon Mojito",60],["Orange Mojito",70],["Rose Mojito",70],["Jamun Mojito",70],["Pineapple Mojito",70],["Green Mint Mocktail",70]],
+"Pani Puri":[["Pani Puri",30],["Special Pani Puri",50],["Dahi Puri",50],["Veg Puri Bhel",40]],
+"Corn":[["Sweet Corn Bowl",60],["Peri Peri Sweet Corn",50]]
+};
+let cart=[];
+const menu=document.getElementById('menu');
+Object.entries(data).forEach(([cat,items])=>{let c=document.createElement('div');c.className='card';c.innerHTML='<h3>'+cat+'</h3>'+items.map((x,i)=>`<div class="item"><span>${x[0]}</span><span class="price">₹${x[1]} <button onclick='add(${JSON.stringify(cat)},${i})'>+</button></span></div>`).join('');menu.appendChild(c)});
+function add(cat,i){let [n,p]=data[cat][i],x=cart.find(a=>a.n==n);x?x.q++:cart.push({n,p,q:1});render()}
+function render(){document.getElementById('count').textContent=cart.reduce((s,x)=>s+x.q,0);document.getElementById('total').textContent=cart.reduce((s,x)=>s+x.p*x.q,0);document.getElementById('cart').innerHTML=cart.length?cart.map((x,i)=>`<div class="cartline"><span>${x.n}<br>₹${x.p} × ${x.q}</span><span><button onclick="change(${i},-1)">−</button> ${x.q} <button onclick="change(${i},1)">+</button><br><button onclick="removeItem(${i})">❌</button></span></div>`).join(''):'<p style="color:#aaa">Your cart is empty.</p>'}
+function change(i,d){cart[i].q+=d;if(cart[i].q<1)cart.splice(i,1);render()}function removeItem(i){cart.splice(i,1);render()}function clearCart(){cart=[];render()}
+function order(){if(!cart.length)return alert('Please add food items first.');let n=name.value.trim(),p=phone.value.trim(),a=address.value.trim();if(!n||!p||!a)return alert('Please fill Name, Mobile Number and Address.');let lines=cart.map(x=>`• ${x.n} × ${x.q} = ₹${x.p*x.q}`).join('%0A');let total=cart.reduce((s,x)=>s+x.p*x.q,0);let msg=`*GALAXY CAFE - NEW ORDER*%0A%0A*Customer:* ${encodeURIComponent(n)}%0A*Mobile:* ${encodeURIComponent(p)}%0A*Address:* ${encodeURIComponent(a)}%0A*Order Type:* ${encodeURIComponent(type.value)}%0A%0A*Items:*%0A${lines}%0A%0A*TOTAL: ₹${total}*%0A*Note:* ${encodeURIComponent(note.value||'None')}`;window.open('https://wa.me/917083862019?text='+msg,'_blank')}
+</script></body></html>
