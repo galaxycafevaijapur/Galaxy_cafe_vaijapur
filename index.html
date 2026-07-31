@@ -51,5 +51,16 @@ Object.entries(data).forEach(([cat,items])=>{let c=document.createElement('div')
 function add(cat,i){let [n,p]=data[cat][i],x=cart.find(a=>a.n==n);x?x.q++:cart.push({n,p,q:1});render()}
 function render(){document.getElementById('count').textContent=cart.reduce((s,x)=>s+x.q,0);document.getElementById('total').textContent=cart.reduce((s,x)=>s+x.p*x.q,0);document.getElementById('cart').innerHTML=cart.length?cart.map((x,i)=>`<div class="cartline"><span>${x.n}<br>₹${x.p} × ${x.q}</span><span><button onclick="change(${i},-1)">−</button> ${x.q} <button onclick="change(${i},1)">+</button><br><button onclick="removeItem(${i})">❌</button></span></div>`).join(''):'<p style="color:#aaa">Your cart is empty.</p>'}
 function change(i,d){cart[i].q+=d;if(cart[i].q<1)cart.splice(i,1);render()}function removeItem(i){cart.splice(i,1);render()}function clearCart(){cart=[];render()}
-function order(){if(!cart.length)return alert('Please add food items first.');let n=name.value.trim(),p=phone.value.trim(),a=address.value.trim();if(!n||!p||!a)return alert('Please fill Name, Mobile Number and Address.');let lines=cart.map(x=>`• ${x.n} × ${x.q} = ₹${x.p*x.q}`).join('%0A');let total=cart.reduce((s,x)=>s+x.p*x.q,0);let msg=`*GALAXY CAFE - NEW ORDER*%0A%0A*Customer:* ${encodeURIComponent(n)}%0A*Mobile:* ${encodeURIComponent(p)}%0A*Address:* ${encodeURIComponent(a)}%0A*Order Type:* ${encodeURIComponent(type.value)}%0A%0A*Items:*%0A${lines}%0A%0A*TOTAL: ₹${total}*%0A*Note:* ${encodeURIComponent(note.value||'None')}`;window.open('https://wa.me/917083862019?text='+msg,'_blank')}
-</script></body></html>
+function order(){
+if(!cart.length){alert('Please add food items first.');return;}
+const customerName=document.getElementById('name').value.trim();
+const customerPhone=document.getElementById('phone').value.trim();
+const customerAddress=document.getElementById('address').value.trim();
+const orderType=document.getElementById('type').value;
+const orderNote=document.getElementById('note').value.trim();
+if(!customerName||!customerPhone||!customerAddress){alert('Please fill Name, Mobile Number and Address.');return;}
+const itemLines=cart.map(x=>`• ${x.n} × ${x.q} = ₹${x.p*x.q}`).join('\n');
+const totalAmount=cart.reduce((s,x)=>s+x.p*x.q,0);
+const message=`*GALAXY CAFE - NEW ORDER*\n\n*Customer:* ${customerName}\n*Mobile:* ${customerPhone}\n*Address:* ${customerAddress}\n*Order Type:* ${orderType}\n\n*Items:*\n${itemLines}\n\n*TOTAL: ₹${totalAmount}*\n*Note:* ${orderNote||'None'}`;
+window.location.href='https://api.whatsapp.com/send?phone=917083862019&text='+encodeURIComponent(message);
+}</script></body></html>
